@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="templates/mailserver-config.css">
+<title>Login</title>
+</head>
+<body>
+<div id="main"></div>
+	<form method="POST" action="index.php">
+	<table>
+		<tr>
+			<td>Emailadresse:</td>
+			<td><input name="email"></td>
+		</tr>
+		<tr>
+			<td>Passwort:</td>
+			<td><input name="password" type=password></td>
+		</tr>
+		<tr>
+			<td><input type=submit name=submit value="Einloggen"></td>
+		</tr>
+	</table>
+	</form>
+</div>
+<div id="info">		
+	<?php echo $info  ?>
+</div>
+</body>

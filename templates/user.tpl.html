@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="templates/mailserver-config.css">
+<title>User</title>
+</head>
+<form method="POST" action="index.php">
+<p><h1>Passwort Ändern</h1></p>
+<table>
+	<tr>
+		<td>Neues Passwort:</td> 
+		<td><input name="newpassword1" type=password></td>
+	</tr>
+	<tr>
+		<td>Neuse Passwort:</td>
+		<td><input name="newpassword2" type=password></td>
+	</tr>
+	<tr>
+		<td><input type=submit name=changepassword value="Senden"></td>
+	</tr>
+	<tr>
+		<td><input type=submit name=logout value="Abmelden"></td>
+	</tr>
+</table>
+<table>
+<tr>
+	<td><?php echo $info  ?></td>
+</tr>
+</table>
+</form>
