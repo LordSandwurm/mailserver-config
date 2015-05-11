@@ -119,7 +119,7 @@
 	  			exit;
 			}
 			
-			$_SESSION["info"] = "Passwort wurde geändert <br>";
+			$_SESSION["info"] = "Passwort wurde ge&auml;ndert <br>";
 		}
 		else
 		{
