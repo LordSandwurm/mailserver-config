@@ -4,18 +4,27 @@ class encodeDovecot
 	# encode with existing salt from password
 	public static function encode_with_existing_salt($mode,$password,$db_password) 
 	{
-		# check if variable are empty and return 1 if this is so
+		# Return 1 if variable are empty. Return 2 if hashmode is not suported.
 		if (empty($password))
 			return 1;
 		if (empty($db_password))
 			return 1;
 		if (empty($mode))
 			return 1;
-		if ($mode !== 'sha512')
+		if ($mode !== 'sha512' && $mode !== 'sha256')
 			return 2;
-		
-		#get salt from DB password
-		$_salt = substr(base64_decode($db_password), 64);
+			
+		switch ($mode){
+			case 'sha512':
+				#get salt from DB password
+				$_salt = substr(base64_decode($db_password), 64);
+				break;
+			case 'sha256':
+				#get salt from DB password
+				$_salt = substr(base64_decode($db_password), 32);				
+				break;
+		}
+			
 
 		#hash password from input with salt from database
 		$hash = base64_encode(hash($mode, $password . $_salt, TRUE).$_salt);
@@ -31,8 +40,8 @@ class encodeDovecot
 			return 1;
 		if (empty($mode))
 			return 1;
-		if ($mode !== 'sha512')
-			return 2;
+		if ($mode !== 'sha512' && $mode !== 'sha256')
+			return 2;		
 		
 		# generate random salt
 		$newsalt = self::randomString(8);

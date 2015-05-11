@@ -26,15 +26,6 @@
   		exit;
 	}
 	
-	# Verbindung zur richtigen Datenbank herstellen
-	#$datenbank = mysql_select_db($_db_datenbank, $link);
-	
-	#if (!$datenbank)
-	#{
-		#echo "Kann die Datenbank nicht benutzen: " . mysql_error();
-		#mysql_close($link);        # Datenbank schliessen
-		#exit;                    # Programm beenden !
-	#}
 	
 	##################################################################
 	# Die Datenbank ist geöffnet und die richtige Datenbank ausgewählt
@@ -62,7 +53,7 @@
 		 
 		$line = mysqli_fetch_array($_res,MYSQL_ASSOC);
 		$_dbpassword = $line['password'];
-		$hash = encodeDovecot::encode_with_existing_salt('sha512', $_password, $_dbpassword);
+		$hash = encodeDovecot::encode_with_existing_salt($_hash_mode, $_password, $_dbpassword);
 		# DEBUG INFO
 		# $_SESSION["info"] = $_password."<br>".$_dbpassword."<br>".$hash;
 		$_SESSION["info"] = "Login Fehlgeschlagen";
@@ -119,7 +110,7 @@
 		{
 			
 			$user = $_SESSION["user"];
-			$hash = encodeDovecot::encode_with_new_salt('sha512', $_password1);
+			$hash = encodeDovecot::encode_with_new_salt($_hash_mode, $_password1);
 			$_sql = "UPDATE virtual_users SET password='$hash' WHERE email='$user'";
 			if (!mysqli_query($link,$_sql))
 			{
@@ -152,7 +143,7 @@
 		{
 			
 			$user = @mysqli_real_escape_string($link,$_POST["changemail"]);
-			$hash = encodeDovecot::encode_with_new_salt('sha512', $_password1);
+			$hash = encodeDovecot::encode_with_new_salt($_hash_mode, $_password1);
 			$_sql = "UPDATE virtual_users SET password='$hash' WHERE email='$user'";
 			if (!mysqli_query($link,$_sql))
 			{
@@ -197,8 +188,23 @@
 			exit;
 		}
 		
-		$hash = encodeDovecot::encode_with_new_salt('sha512', $_newpassword);
-		//TODO domainj id holen. Prüfen ob der user schon existiert (eventuel update des passwortes)
+		# Befehl für die MySQL Datenbank
+		$_sql = "SELECT * FROM virtual_users WHERE
+		email='$_newemail'
+		LIMIT 1";
+		
+		# Prüfen, ob der User in der Datenbank existiert !
+		$_res = mysqli_query($link, $_sql);
+		$_anzahl = @mysqli_num_rows($_res);
+		
+		if ($_anzahl > 0)
+		{
+			$_SESSION["info"] = "Email existiert bereits!";
+			header ("Location: ".$_host_url);
+			exit;
+		}
+		
+		$hash = encodeDovecot::encode_with_new_salt($_hash_mode, $_newpassword);
 		
 		$_sql = "INSERT INTO virtual_users (password, email, domain_id) values ('$hash','$_newemail','$domain_id')";
 		if (!mysqli_query($link,$_sql))
@@ -210,7 +216,44 @@
 		
 		@mysqli_free_result($_res);
 		#$_SESSION['info'] = $hash."<br>".$_domain."<br>".$domain_id;
-		$_SESSION['info'] = "Neue emailadresse ".$_newemail." erstellt";
+		$_SESSION['info'] = "Neue Emailadresse ".$_newemail." erstellt";
+		
+	}
+	
+	# Neue Domäne anlegen
+	if (!empty($_POST["newdomain"]))
+	{
+		$_newdomain = @mysqli_real_escape_string($link,$_POST["domain"]);
+		
+		if (empty($_newdomain))
+		{
+			$_SESSION["info"] = "Leeres Eingabefeld!";
+			header ("Location: ".$_host_url);
+			exit;
+		}
+		
+		$_sql = "SELECT * FROM virtual_domains WHERE name='$_newdomain'";			
+		$_res = mysqli_query($link, $_sql);			
+		$_anzahl = @mysqli_num_rows($_res);
+		
+		if ($_anzahl > 0)
+		{
+			$_SESSION["info"] = "Domäne existiert bereits!";
+			header ("Location: ".$_host_url);
+			exit;
+		}
+		
+		$_sql = "INSERT INTO virtual_domains (name) values ('$_newdomain')";
+		if (!mysqli_query($link,$_sql))
+		{
+  			die('Error: ' . mysqli_error($link));
+  			session_destroy();
+  			exit;
+		}
+		
+		@mysqli_free_result($_res);
+		#$_SESSION['info'] = $hash."<br>".$_domain."<br>".$domain_id;
+		$_SESSION['info'] = "Neue Domäne ".$_newemail." erstellt";
 		
 	}
 	
