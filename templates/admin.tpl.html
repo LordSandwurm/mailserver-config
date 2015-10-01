@@ -1,79 +1,54 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<link rel="stylesheet" type="text/css" href="templates/mailserver-config.css">
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="normalize.css">
+<link rel="stylesheet" type="text/css" href="skeleton.css">
+<link rel="stylesheet" type="text/css" href="style.css">
 <title>Admin</title>
 </head>
-<form method="POST" action="index.php">
-<p><h1>Passwort &Auml;ndern</h1></p>
-<table>
-	<tr>
-		<td>Neues Passwort:</td> 
-		<td><input name="newpassword1" type=password></td>
-	</tr>
-	<tr>
-		<td>Neuse Passwort:</td>
-		<td><input name="newpassword2" type=password></td>
-	</tr>
-	<tr>
-		<td><input type=submit name=changepassword value="Senden"></td>
-	</tr>
-</table>
-<p><h1>Neues Emailkonto</h1></p>
-<table>
-	<tr>
-		<td>Email:</td>
-		<td><input name="newemail"></td>
-	</tr>
-	<tr>
-		<td>Passwort:</td>
-		<td><input name="newuserpassword" type=password></td>
-	</tr>
-	<tr>
-		<td><input type=submit name=newuser value="Eintragen"></td>
-	</tr>
-</table>
-<p><h1>Bestehendes Kontopasswort &auml;ndern</h1></p>
-<table>
-	<tr>
-		<td>Email:</td>
-		<td><input name="changemail"></td>
-	</tr>
-	<tr>
-		<td>Passwort:</td>
-		<td><input name="changepassword1" type=password></td>
-	</tr>
-	<tr>
-		<td>Passwort:</td>
-		<td><input name="changepassword2" type=password></td>
-	</tr>
-	<tr>
-		<td><input type=submit name=changeolduser value="&Auml;ndern"></td>
-	</tr>
-</table>
-</table>
-<p><h1>Neue Dom�ne anlegen</h1></p>
-<table>
-	<tr>
-		<td>Dom&auml;ne:</td>
-		<td><input name="domain"></td>
-	</tr>
-	<tr>
-		<td><input type=submit name=newdomain value="Anlegen"></td>
-	</tr>
-</table>
-<table>
-	<tr>
-		<td> <br> </td>
-	</tr>
-	<tr>
-		<td><input type=submit name=logout value="Abmelden"></td>
-	</tr>		
-</table>
-<table>
-<tr>
-	<td><?php echo $info  ?></td>
-</tr>
-</table>
+
+<body>
+    
+<form class="container" method="POST" action="index.php">
+
+    <div class="row">
+        <div class="one-half column">
+        <br><h4>Passwort ändern</h4>
+            Neues Passwort:&ensp;<input name="newpassword1" type=password>
+            <br>neues Passwort:&ensp;<input name="newpassword2" type=password>
+            <br><input class="button-primary" type=submit name=changepassword value="Senden">
+        </div>
+        
+        <div class="one-half column">
+            <br><h4>Bestehendes Kontopasswort ändern</h4>
+            Email:&thinsp;&emsp;&emsp;<input name="changemail" type="email">
+            <br>Passwort:&ensp;<input name="changepassword1" type=password>
+            <br>Passwort:&ensp;<input name="changepassword2" type=password>
+            <br><input class="button-primary" type=submit name=changeolduser value="ändern">
+        </div>   
+        
+    <div class="row">
+        <div class="one-half column">    
+            <br><h4>Neues Emailkonto</h4>
+            Email:&emsp;&emsp;&emsp;&emsp;&emsp;<input name="newemail" type="email">
+            <br>Passwort:&emsp;&emsp;&emsp;
+            <input name="newuserpassword" type=password>
+            <br><input class="button-primary" type=submit name=newuser value="Eintragen">
+        </div>    
+        <div class="one-half column">     
+            <br><h4>Neue Domäne anlegen</h4>
+            Domäne:&emsp;<input name="domain" type=email>
+            <br><input class="button-primary" type=submit name=newdomain value="Anlegen">
+            
+        </div> 
+        
+    </div>
+    
+        <br><?php echo $info  ?><br><input class="button-primary" type=submit name=logout value="Abmelden">
+
 </form>
+    
+</body>
+
+</html>

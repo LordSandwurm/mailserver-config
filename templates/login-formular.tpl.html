@@ -1,29 +1,29 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<link rel="stylesheet" type="text/css" href="templates/mailserver-config.css">
-<title>Login</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="normalize.css">
+    <link rel="stylesheet" type="text/css" href="skeleton.css">
+    <!--
+    <link rel="stylesheet" type="text/css" href="mailserver-config.css">
+    -->
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Login</title>
 </head>
 <body>
-<div id="main"></div>
-	<form method="POST" action="index.php">
-	<table>
-		<tr>
-			<td>Emailadresse:</td>
-			<td><input name="email"></td>
-		</tr>
-		<tr>
-			<td>Passwort:</td>
-			<td><input name="password" type=password></td>
-		</tr>
-		<tr>
-			<td><input type=submit name=submit value="Einloggen"></td>
-		</tr>
-	</table>
-	</form>
-</div>
-<div id="info">		
-	<?php echo $info  ?>
-</div>
+    <div id="main" class="wrapper wrapper-red"></div>
+            <form class="container" method="POST" action="index.php">
+                <div class="row">    
+                    <div class="login one-third-column">
+                            Emailadresse:&thinsp;<input  type="email" name="email">
+                            <br>Passwort:&emsp;&emsp;<input  name="password" type=password>
+                            <br><input class="button-primary login-button" type=submit name=submit value="Einloggen">
+                    </div>
+                        <div id="info">
+                            <?php echo $info  ?>
+                    </div>
+                </div>
+            </form>
+    
+
 </body>

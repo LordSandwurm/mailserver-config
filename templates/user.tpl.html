@@ -1,31 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<link rel="stylesheet" type="text/css" href="templates/mailserver-config.css">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="normalize.css">
+    <link rel="stylesheet" type="text/css" href="skeleton.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 <title>User</title>
 </head>
-<form method="POST" action="index.php">
-<p><h1>Passwort �ndern</h1></p>
-<table>
-	<tr>
-		<td>Neues Passwort:</td> 
-		<td><input name="newpassword1" type=password></td>
-	</tr>
-	<tr>
-		<td>Neuse Passwort:</td>
-		<td><input name="newpassword2" type=password></td>
-	</tr>
-	<tr>
-		<td><input type=submit name=changepassword value="Senden"></td>
-	</tr>
-	<tr>
-		<td><input type=submit name=logout value="Abmelden"></td>
-	</tr>
-</table>
-<table>
-<tr>
-	<td><?php echo $info  ?></td>
-</tr>
-</table>
-</form>
+
+<body>
+    <div class="container">
+        <div class="user-login">
+            <form class="row two-thirds column" method="POST" action="index.php">
+                <br><h3>Passwort ändern</h3>
+                neues Passwort:&emsp;&emsp;&emsp;<input name="newpassword1" type=password>
+                <br>Passwort wiederholen:&ensp;<input name="newpassword2" type=password>
+                <br><input class="button-primary" type=submit name=changepassword value="Senden">
+                <br><input class="button-primary" type=submit name=logout value="Abmelden">
+                <br><?php echo $info  ?>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

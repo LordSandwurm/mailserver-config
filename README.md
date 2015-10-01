@@ -1,8 +1,16 @@
 # mailserver-config
+Weboberfläche für den Mailserver der mithilfe von dem Tutorial von Christopf Haas erstellt wurde.
+https://workaround.org/ispmail/wheezy
+
+Die Oberfläche kann zurzeit nur ssha512 das wie in diesem Tutorial beschrieben ergenzt wurde.
+https://blog.lordsandwurm.de/emailserver-mit-dovekot-datenbank-mit-sicheren-hashes/
 
 Installation:
 Alle Dateien in einen Ordner legen. Lesbar für euren Webserve.
 config.php anpassen.
+
+Desing:
+Skeleton.css mit freundlicher Hilfe von Michael Schnurowatzki
 
 SICHERHEIT:
 Es sollte auf keinen Fall zugriff ohne SSL Verschlüsselung erfolgen, da die Passwörter im Klartext übertragen werden.
