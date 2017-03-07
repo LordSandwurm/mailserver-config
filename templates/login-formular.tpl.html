@@ -2,12 +2,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="normalize.css">
-    <link rel="stylesheet" type="text/css" href="skeleton.css">
-    <!--
-    <link rel="stylesheet" type="text/css" href="mailserver-config.css">
-    -->
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="control.js"></script>
+    <link rel="stylesheet" type="text/css" href="templates/normalize.css">
+    <link rel="stylesheet" type="text/css" href="templates/skeleton.css">
+    <link rel="stylesheet" type="text/css" href="templates/style.css">
     <title>Login</title>
 </head>
 <body>
@@ -15,9 +13,9 @@
             <form class="container" method="POST" action="index.php">
                 <div class="row">    
                     <div class="login one-third-column">
-                            Emailadresse:&thinsp;<input  type="email" name="email">
-                            <br>Passwort:&emsp;&emsp;<input  name="password" type=password>
-                            <br><input class="button-primary login-button" type=submit name=submit value="Einloggen">
+                            Emailadresse:&thinsp;<input  type="email" name="email" id="email">
+                            <br>Passwort:&emsp;&emsp;<input  name="password" type=password id="password">
+                            <br><input class="button-primary login-button" type=submit name=submit d=login value="Einloggen">
                     </div>
                         <div id="info">
                             <?php echo $info  ?>

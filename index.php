@@ -28,52 +28,51 @@
 	
 	
 	##################################################################
-	# Die Datenbank ist geöffnet und die richtige Datenbank ausgewählt
-	# Hier müssen wir nun prüfen, ob der Benutzer eingeloggt ist
+	# Die Datenbank ist geï¿½ffnet und die richtige Datenbank ausgewï¿½hlt
+	# Hier mï¿½ssen wir nun prï¿½fen, ob der Benutzer eingeloggt ist
 	# und ob das Formular angezeigt werden muss
 	##################################################################
 
 	# Ist die $_POST Variable submit nicht leer ???
-	# dann wurden Logindaten eingegeben, die müssen wir überprüfen !
+	# dann wurden Logindaten eingegeben, die mï¿½ssen wir ï¿½berprï¿½fen !
 	if (!empty($_POST["submit"]))
 	{
 		
 		# Die Werte die im Loginformular eingegeben wurden "escapen",
-		# damit keine Hackangriffe über den Login erfolgen können !
+		# damit keine Hackangriffe ï¿½ber den Login erfolgen kï¿½nnen !
 		# Mysql_real_escape ist auf jedenfall dem Befehle addslashes()
-		# vorzuziehen !!! Ohne sind mysql injections möglich !!!!
+		# vorzuziehen !!! Ohne sind mysql injections mï¿½glich !!!!
 		$_email = @mysqli_real_escape_string($link,$_POST["email"]);
 		$_password = @mysqli_real_escape_string($link,$_POST["password"]);
 	 
-		# Befehl für die MySQL Datenbank
-		$_sql = "SELECT password FROM virtual_users WHERE
-		email='$_email'";
+		# Befehl fï¿½r die MySQL Datenbank
+		$_sql = "SELECT password FROM virtual_users WHERE email='$_email'";
 		 
 		$_res = mysqli_query($link, $_sql);
 		 
-		$line = mysqli_fetch_array($_res,MYSQL_ASSOC);
+		$line = mysqli_fetch_array($_res, MYSQLI_ASSOC);
 		$_dbpassword = $line['password'];
 		$hash = encodeDovecot::encode_with_existing_salt($_hash_mode, $_password, $_dbpassword);
 		# DEBUG INFO
-		# $_SESSION["info"] = $_password."<br>".$_dbpassword."<br>".$hash;
+		#$_SESSION["info"] = $_password."<br>".$_dbpassword."<br>".$hash;
 		$_SESSION["info"] = "Login Fehlgeschlagen";
 		@mysqli_free_result($_res);
 		 
-		# Befehl für die MySQL Datenbank
+		# Befehl fï¿½r die MySQL Datenbank
 		$_sql = "SELECT * FROM virtual_users WHERE
 		email='$_email' AND
 		password='$hash'
 		LIMIT 1";
 		
-		# Prüfen, ob der User in der Datenbank existiert !
+		# Prï¿½fen, ob der User in der Datenbank existiert !
 		$_res = mysqli_query($link, $_sql);
 		$_anzahl = @mysqli_num_rows($_res);
 	 
 
-		# Die Anzahl der gefundenen Einträge überprüfen. Maximal
-		# wird 1 Eintrag rausgefiltert (LIMIT 1). Wenn 0 Einträge
+		# Die Anzahl der gefundenen Eintrï¿½ge ï¿½berprï¿½fen. Maximal
+		# wird 1 Eintrag rausgefiltert (LIMIT 1). Wenn 0 Eintrï¿½ge
 		# gefunden wurden, dann gibt es keinen Usereintrag, der
-		# gültig ist. Keinen wo der Username und das Passwort stimmt
+		# gï¿½ltig ist. Keinen wo der Username und das Passwort stimmt
 		# und user_geloescht auch gleich 0 ist !
 		if ($_anzahl > 0)
 		{
@@ -83,7 +82,7 @@
 			$_SESSION["login"] = 1;
 			
 			# Den Eintrag vom User in der Session speichern !
-			$username = mysqli_fetch_array($_res, MYSQL_ASSOC);
+			$username = mysqli_fetch_array($_res, MYSQLI_ASSOC);
 			$_SESSION["user"] = $username["email"];
 	
 			# Das Einlogdatum in der Tabelle setzen !
@@ -95,7 +94,7 @@
 		@mysqli_free_result($_res);
 	}
 
-	# Hier wird das geänderte Passwort geprüft und in die Datenbank gespeichert.
+	# Hier wird das geï¿½nderte Passwort geprï¿½ft und in die Datenbank gespeichert.
 	if (!empty($_POST["changepassword"]))
 	{
 		$_password1 = @mysqli_real_escape_string($link,$_POST["newpassword1"]);
@@ -103,32 +102,34 @@
 		
 		if (empty($_password1)) 
 		{
-			$_SESSION["info"] = "Leeres Password nicht erlaubt!";
-			exit;
-		}
-		if ($_password1 === $_password2)
-		{
-			
-			$user = $_SESSION["user"];
-			$hash = encodeDovecot::encode_with_new_salt($_hash_mode, $_password1);
-			$_sql = "UPDATE virtual_users SET password='$hash' WHERE email='$user'";
-			if (!mysqli_query($link,$_sql))
-			{
-	  			die('Error: ' . mysqli_error($link));
-	  			session_destroy();
-	  			exit;
-			}
-			
-			$_SESSION["info"] = "Passwort wurde ge&auml;ndert <br>";
+			$_SESSION["info"] = "Leeres Password nicht erlaubt! <br>";
 		}
 		else
 		{
-			$_SESSION["info"] = "Passwörter sind nicht gleich! <br>";
+			if ($_password1 === $_password2)
+			{
+				
+				$user = $_SESSION["user"];
+				$hash = encodeDovecot::encode_with_new_salt($_hash_mode, $_password1);
+				$_sql = "UPDATE virtual_users SET password='$hash' WHERE email='$user'";
+				if (!mysqli_query($link,$_sql))
+				{
+					die('Error: ' . mysqli_error($link));
+					session_destroy();
+					exit;
+				}
+				
+				$_SESSION["info"] = "Passwort wurde ge&auml;ndert <br>";
+			}
+			else
+			{
+				$_SESSION["info"] = "PasswÃ¶rter sind nicht gleich! <br>";
+			}
 		}
  
 	}
 	
-	# passwort eines existierenden users ändern.
+	# passwort eines existierenden users ï¿½ndern.
 	if (!empty($_POST["changeolduser"]))
 	{
 		$_password1 = @mysqli_real_escape_string($link,$_POST["changepassword1"]);
@@ -136,70 +137,93 @@
 		
 		if (empty($_password1)) 
 		{
-			$_SESSION["info"] = "Leeres Password nicht erlaubt!";
-			exit;
-		}
-		if ($_password1 === $_password2)
-		{
-			
-			$user = @mysqli_real_escape_string($link,$_POST["changemail"]);
-			$hash = encodeDovecot::encode_with_new_salt($_hash_mode, $_password1);
-			$_sql = "UPDATE virtual_users SET password='$hash' WHERE email='$user'";
-			if (!mysqli_query($link,$_sql))
-			{
-	  			die('Error: ' . mysqli_error($link));
-	  			session_destroy();
-	  			exit;
-			}
-			
-			$_SESSION["info"] = "Passwort wurde geändert <br>";
+			$_SESSION["info"] = "Leeres Password nicht erlaubt! <br>";
 		}
 		else
 		{
-			$_SESSION["info"] = "Passwörter sind nicht gleich! <br>";
+			if ($_password1 === $_password2)
+			{
+			
+				$user = @mysqli_real_escape_string($link,$_POST["changemail"]);
+
+				$_sql = "SELECT * FROM virtual_users WHERE email='$user' LIMIT 1";
+
+				//Prï¿½fen, ob der User in der Datenbank existiert !
+				$_res = mysqli_query($link, $_sql);
+				$_anzahl = @mysqli_num_rows($_res);
+
+
+				if ($_anzahl > 0)
+				{
+					$hash = encodeDovecot::encode_with_new_salt($_hash_mode, $_password1);
+					$_sql = "UPDATE virtual_users SET password='$hash' WHERE email='$user'";
+					if (!mysqli_query($link,$_sql))
+					{
+						die('Error: ' . mysqli_error($link));
+						session_destroy();
+						exit;
+					}
+			
+					$_SESSION["info"] = "Passwort wurde geÃ¤ndert <br>";
+				}
+				else
+				{
+					$_SESSION["info"] = "Emailadresse existiert nicht! <br>";
+				}
+				
+			}
+			else
+			{
+				$_SESSION["info"] = "PasswÃ¶rter sind nicht gleich! <br>";
+			}
 		}
+		
  
 	}
 
 	if (!empty($_POST["newuser"]))
 	{
 		$_newpassword = @mysqli_real_escape_string($link,$_POST["newuserpassword"]);
+		$_newpassword2 = @mysqli_real_escape_string($link,$_POST["newuserpassword2"]);
 		$_newemail = @mysqli_real_escape_string($link,$_POST["newemail"]);
 		
 		if (empty($_newpassword))
 		{
-			$_SESSION["info"] = "Leeres Password nicht erlaubt!";
+			$_SESSION["info"] = "Leeres Password nicht erlaubt! <br>";
 			header ("Location: ".$_host_url);
 			exit;
 		}
-		
+		if ($_newpassword === $_newpassword2)
+		{
+			
+		}
 		$_domain = strstr($_newemail, "@");
 		$_domain = substr($_domain, 1);
 		
 		$_sql = "SELECT id FROM virtual_domains WHERE name='$_domain'";			
 		$_res = mysqli_query($link, $_sql);			
-		$line = mysqli_fetch_array($_res,MYSQL_ASSOC);		
+		$line = mysqli_fetch_array($_res,MYSQLI_ASSOC);		
 		$domain_id = $line['id'];
 		
 		if (empty($domain_id))
 		{
-			$_SESSION["info"] = "Keine Gültige Domaine!";
+			$_SESSION["info"] = "Keine GÃ¼ltige Domaine! <br>";
 			header ("Location: ".$_host_url);
 			exit;
 		}
 		
-		# Befehl für die MySQL Datenbank
+		# Befehl fï¿½r die MySQL Datenbank
 		$_sql = "SELECT * FROM virtual_users WHERE
 		email='$_newemail'
 		LIMIT 1";
 		
-		# Prüfen, ob der User in der Datenbank existiert !
+		# Prï¿½fen, ob der User in der Datenbank existiert !
 		$_res = mysqli_query($link, $_sql);
 		$_anzahl = @mysqli_num_rows($_res);
 		
 		if ($_anzahl > 0)
 		{
-			$_SESSION["info"] = "Email existiert bereits!";
+			$_SESSION["info"] = "Email existiert bereits! <br>";
 			header ("Location: ".$_host_url);
 			exit;
 		}
@@ -213,21 +237,29 @@
   			session_destroy();
   			exit;
 		}
+
+		$_sql = "INSERT INTO virtual_aliases (domain_id, source, destination) values ('$domain_id','$_newemail','$_newemail')";
+		if (!mysqli_query($link,$_sql))
+		{
+  			die('Error: ' . mysqli_error($link));
+  			session_destroy();
+  			exit;
+		}
 		
 		@mysqli_free_result($_res);
 		#$_SESSION['info'] = $hash."<br>".$_domain."<br>".$domain_id;
-		$_SESSION['info'] = "Neue Emailadresse ".$_newemail." erstellt";
+		$_SESSION['info'] = "Neue Emailadresse ".$_newemail." erstellt <br>";
 		
 	}
 	
-	# Neue Domäne anlegen
+	# Neue DomÃ¤ne anlegen
 	if (!empty($_POST["newdomain"]))
 	{
 		$_newdomain = @mysqli_real_escape_string($link,$_POST["domain"]);
 		
 		if (empty($_newdomain))
 		{
-			$_SESSION["info"] = "Leeres Eingabefeld!";
+			$_SESSION["info"] = "Leeres Eingabefeld! <br>";
 			header ("Location: ".$_host_url);
 			exit;
 		}
@@ -238,7 +270,7 @@
 		
 		if ($_anzahl > 0)
 		{
-			$_SESSION["info"] = "Domäne existiert bereits!";
+			$_SESSION["info"] = "DomÃ¤ne existiert bereits! <br>";
 			header ("Location: ".$_host_url);
 			exit;
 		}
@@ -253,7 +285,7 @@
 		
 		@mysqli_free_result($_res);
 		#$_SESSION['info'] = $hash."<br>".$_domain."<br>".$domain_id;
-		$_SESSION['info'] = "Neue Domäne ".$_newemail." erstellt";
+		$_SESSION['info'] = "Neue DomÃ¤ne ".$_newdomain." erstellt <br>";
 		
 	}
 	
@@ -268,7 +300,7 @@
 			exit;
 	}
 	
-	# Hier wäre der User jetzt gültig angemeldet ! Hier kann
+	# Hier wï¿½re der User jetzt gï¿½ltig angemeldet ! Hier kann
 	# Programmcode stehen, den nur eingeloggte User sehen sollen !!
 	if ($_admin_account === $_SESSION["user"])
 	{
